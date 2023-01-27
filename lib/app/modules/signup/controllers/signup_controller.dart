@@ -1,12 +1,28 @@
+import 'package:eccomerse_vegetable/app/modules/widgets/common_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class SignupController extends GetxController {
-  //TODO: Implement SignupController
-  GlobalKey signupFormKey = GlobalKey<FormState>();
+  static SignupController get to => Get.find();
+  final signupFormKey = GlobalKey<FormState>();
+
+  bool hidepassword = true;
   double strength = 0;
   String displayText = '';
-  bool remember=true;
+  bool remember = true;
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
+
+ signup() async {
+    Widgets.showLoader("Signup");
+    await Future.delayed(const Duration(seconds: 1));
+    Widgets.hideLoader();
+    Get.offAllNamed('/home');
+  }
+
+
 
   void checkPassword(String value) {
     RegExp numReg = RegExp(r".*[0-9].*");

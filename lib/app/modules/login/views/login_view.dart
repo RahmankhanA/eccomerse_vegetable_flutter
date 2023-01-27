@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eccomerse_vegetable/app/data/colors.dart';
 import 'package:eccomerse_vegetable/app/utils/decoration.dart';
 import 'package:eccomerse_vegetable/app/utils/validators.dart';
@@ -14,7 +16,7 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: Stack(
@@ -39,155 +41,169 @@ class LoginView extends GetView<LoginController> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0)),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      'Welcome',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 23,
-                        fontWeight: FontWeight.bold,
+                child: Form(
+                  key: controller.loginFormKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text(
-                      "Please enter your details to continue",
-                      style: TextStyle(color: AppColor.secondaryTextColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      onChanged: (value) {
-                        // LoginController.controller.email = value;
-                      },
-                      cursorColor: AppColor.secondaryTextColor,
-                      style:
-                          const TextStyle(color: AppColor.secondaryTextColor),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      autofocus: true,
-                      // maxLength: 14,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: Decorations.inputDecoration.copyWith(
-                        labelText: "Email ",
-                        prefixIcon: const Icon(
-                          Icons.email,
-                          color: AppColor.primaryTextColor,
+                      const Text(
+                        'Welcome',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      validator: (val) =>
-                          FormValidators.validateEmail(val.toString()),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Form(
-                        key: controller.loginFormKey,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            children: [
-                              GetBuilder(
-                                init: controller,
-                                initState: (_) {},
-                                builder: (_) {
-                                  return TextFormField(
-                                    onChanged: (value) {
-                                      // LoginController.controller.email = value;
-                                    },
-                                    cursorColor: AppColor.secondaryTextColor,
-                                    style: const TextStyle(
-                                        color: AppColor.secondaryTextColor),
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    autofocus: true,
-                                    obscureText: controller.hidepassword,
-                                    // maxLength: 14,
-
-                                    decoration:
-                                        Decorations.inputDecoration.copyWith(
-                                            labelText: "Password ",
-                                            prefixIcon: const Icon(
-                                              Icons.lock,
-                                              color: AppColor.primaryTextColor,
-                                            ),
-                                            suffixIcon: IconButton(
-                                              icon: Icon(
-                                                controller.hidepassword
-                                                    ? Icons.visibility_off
-                                                    : Icons.visibility,
-                                              ),
-                                              onPressed: (() {
-                                             controller.hidepassword=   !controller.hidepassword;
-                                                controller.update();
-                                              }),
-                                            )),
-                                    validator: (val) =>
-                                        FormValidators.validatePassword(
-                                            val.toString()),
-                                  );
-                                },
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("Remember me"),
-                                  GetBuilder(
-                                    init: controller,
-                                    initState: (_) {},
-                                    builder: (_) {
-                                      return Switch(
-                                          activeColor:
-                                              AppColor.elevatedButtonColor,
-                                          thumbColor: MaterialStateProperty
-                                              .resolveWith<Color>(
-                                                  (Set<MaterialState> states) {
-                                            if (states.contains(
-                                                MaterialState.disabled)) {
-                                              return AppColor.secondaryTextColor
-                                                  .withOpacity(.48);
-                                            }
-                                            return AppColor.secondaryTextColor;
-                                          }),
-                                          value: controller.remember,
-                                          onChanged: ((value) {
-                                            controller.remember = value;
-                                            controller.update();
-                                          }));
-                                    },
-                                  ),
-
-                                  
-                                ],
-                              )
-                            ],
-                          ),
-                        )),
-
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: size.width * 0.75,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColor.elevatedButtonColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onPressed: () => Get.toNamed('/signup'),
-                        child: const Text("CREATE AN ACCOUNT"),
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ],
+                      const Text(
+                        "Please enter your details to continue",
+                        style: TextStyle(color: AppColor.secondaryTextColor),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: TextFormField(
+                          onChanged: (value) {
+                            // LoginController.controller.email = value;
+                          },
+                          cursorColor: AppColor.secondaryTextColor,
+                          style: const TextStyle(
+                              color: AppColor.secondaryTextColor),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          autofocus: true,
+                          // maxLength: 14,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: Decorations.inputDecoration.copyWith(
+                            labelText: "Email ",
+                            prefixIcon: const Icon(
+                              Icons.email,
+                              color: AppColor.primaryTextColor,
+                            ),
+                          ),
+                          validator: (val) =>
+                              FormValidators.validateEmail(val.toString()),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          children: [
+                            GetBuilder(
+                              init: controller,
+                              initState: (_) {},
+                              builder: (_) {
+                                return TextFormField(
+                                  onChanged: (value) {
+                                    // LoginController.controller.email = value;
+                                  },
+                                  cursorColor: AppColor.secondaryTextColor,
+                                  style: const TextStyle(
+                                      color: AppColor.secondaryTextColor),
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  autofocus: true,
+                                  obscureText: controller.hidepassword,
+                                  // maxLength: 14,
+                                  onFieldSubmitted: (value) {
+                                    if (controller.loginFormKey.currentState!
+                                        .validate()) {
+                                      controller.login();
+                                    }
+                                    log("enter pressed");
+                                  },
+
+                                  decoration:
+                                      Decorations.inputDecoration.copyWith(
+                                          labelText: "Password ",
+                                          prefixIcon: const Icon(
+                                            Icons.lock,
+                                            color: AppColor.primaryTextColor,
+                                          ),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              controller.hidepassword
+                                                  ? Icons.visibility_off
+                                                  : Icons.visibility,
+                                            ),
+                                            onPressed: (() {
+                                              controller.hidepassword =
+                                                  !controller.hidepassword;
+                                              controller.update();
+                                            }),
+                                          )),
+                                  validator: (val) =>
+                                      FormValidators.validatePassword(
+                                          val.toString()),
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Remember me"),
+                                GetBuilder(
+                                  init: controller,
+                                  initState: (_) {},
+                                  builder: (_) {
+                                    return Switch(
+                                        activeColor:
+                                            AppColor.elevatedButtonColor,
+                                        thumbColor: MaterialStateProperty
+                                            .resolveWith<Color>(
+                                                (Set<MaterialState> states) {
+                                          if (states.contains(
+                                              MaterialState.disabled)) {
+                                            return AppColor.secondaryTextColor
+                                                .withOpacity(.48);
+                                          }
+                                          return AppColor.secondaryTextColor;
+                                        }),
+                                        value: controller.remember,
+                                        onChanged: ((value) {
+                                          controller.remember = value;
+                                          controller.update();
+                                        }));
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        width: size.width * 0.75,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.elevatedButtonColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          onPressed: () {
+                            if (LoginController.to.loginFormKey.currentState!
+                                .validate()) {
+                              controller.login();
+                            }
+                          },
+                          child: const Text("LOGIN"),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

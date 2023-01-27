@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eccomerse_vegetable/app/data/colors.dart';
 import 'package:eccomerse_vegetable/app/utils/decoration.dart';
 import 'package:eccomerse_vegetable/app/utils/validators.dart';
@@ -79,6 +81,7 @@ class SignupView extends GetView<SignupController> {
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   autofocus: true,
+                                  textInputAction: TextInputAction.next,
                                   // maxLength: 14,
 
                                   decoration:
@@ -90,44 +93,8 @@ class SignupView extends GetView<SignupController> {
                                     ),
                                   ),
                                   validator: (val) =>
-                                      FormValidators.basicValidation(
+                                      FormValidators.usernameValidation(
                                           val, "username"),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GetBuilder(
-                                  init: controller,
-                                  initState: (_) {},
-                                  builder: (_) {
-                                    return TextFormField(
-                                      onChanged: (value) {
-                                        // LoginController.controller.email = value;
-                                        controller.checkPassword(value!);
-                                      },
-                                      cursorColor: AppColor.secondaryTextColor,
-                                      style: const TextStyle(
-                                          color: AppColor.secondaryTextColor),
-                                      autovalidateMode:
-                                          AutovalidateMode.onUserInteraction,
-                                      autofocus: true,
-                                      // maxLength: 14,
-
-                                      decoration: Decorations.inputDecoration
-                                          .copyWith(
-                                              labelText: "Password ",
-                                              prefixIcon: const Icon(
-                                                Icons.lock,
-                                                color:
-                                                    AppColor.primaryTextColor,
-                                              ),
-                                              suffixText:
-                                                  controller.displayText),
-                                      validator: (val) =>
-                                          FormValidators.validatePassword(
-                                              val.toString()),
-                                    );
-                                  },
                                 ),
                                 const SizedBox(
                                   height: 8,
@@ -142,6 +109,7 @@ class SignupView extends GetView<SignupController> {
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   autofocus: true,
+                                   textInputAction: TextInputAction.next,
                                   // maxLength: 14,
                                   keyboardType: TextInputType.emailAddress,
                                   decoration:
@@ -156,24 +124,77 @@ class SignupView extends GetView<SignupController> {
                                       FormValidators.validateEmail(
                                           val.toString()),
                                 ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                GetBuilder(
+                                  init: controller,
+                                  initState: (_) {},
+                                  builder: (_) {
+                                    return TextFormField(
+                                      onChanged: (value) {
+                                        // LoginController.controller.email = value;
+                                        controller.checkPassword(value);
+                                      },
+                                      cursorColor: AppColor.secondaryTextColor,
+                                      style: const TextStyle(
+                                          color: AppColor.secondaryTextColor),
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      autofocus: true,
+                                      // maxLength: 14,
+                                      onFieldSubmitted: (value) {
+                                        if (controller
+                                            .signupFormKey.currentState!
+                                            .validate()) {
+                                          controller.signup();
+                                        }
+log("enter pressed");
+                                      },
+
+                                      decoration: Decorations.inputDecoration
+                                          .copyWith(
+                                              labelText: "Password ",
+                                              prefixIcon: const Icon(
+                                                Icons.lock,
+                                                color:
+                                                    AppColor.primaryTextColor,
+                                              ),
+                                              suffixStyle: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600),
+                                              suffixText:
+                                                  controller.displayText),
+                                      validator: (val) =>
+                                          FormValidators.validatePassword(
+                                              val.toString()),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Remember me"),
+                                    const Text("Remember me"),
                                     GetBuilder(
                                       init: controller,
                                       initState: (_) {},
                                       builder: (_) {
                                         return Switch(
-                                          activeColor: AppColor.elevatedButtonColor,
-                                          thumbColor:  MaterialStateProperty
+                                            activeColor:
+                                                AppColor.elevatedButtonColor,
+                                            thumbColor: MaterialStateProperty
                                                 .resolveWith<Color>(
                                                     (Set<MaterialState>
                                                         states) {
                                               if (states.contains(
                                                   MaterialState.disabled)) {
-                                                return AppColor.secondaryTextColor
+                                                return AppColor
+                                                    .secondaryTextColor
                                                     .withOpacity(.48);
                                               }
                                               return AppColor
@@ -181,7 +202,7 @@ class SignupView extends GetView<SignupController> {
                                             }),
                                             value: controller.remember,
                                             onChanged: ((value) {
-                                              controller.remember=value;
+                                              controller.remember = value;
                                               controller.update();
                                             }));
                                       },
@@ -201,7 +222,12 @@ class SignupView extends GetView<SignupController> {
                               backgroundColor: AppColor.elevatedButtonColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
-                          onPressed: () => Get.toNamed('/home'),
+                          onPressed: () {
+                            if (controller.signupFormKey.currentState!
+                                .validate()) {
+                              controller.signup();
+                            }
+                          },
                           child: const Text("CREATE AN ACCOUNT"),
                         ),
                       ),

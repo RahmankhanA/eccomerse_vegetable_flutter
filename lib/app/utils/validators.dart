@@ -33,6 +33,15 @@ class FormValidators {
       return null;
     }
   }
+  static dynamic usernameValidation(String? val, String label) {
+    if (val == null || val.isEmpty) {
+      return "${label.tr} ${"is required".tr}";
+    } else if (!GetUtils.isUsername(val)) {
+      return " $label should be only alpha numeric";
+    } else {
+      return null;
+    }
+  }
 
   static dynamic validatePassword(String val) {
     if (val.isEmpty) {

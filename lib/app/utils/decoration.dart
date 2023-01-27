@@ -46,5 +46,6 @@ class Decorations {
       ),
     ),
     counter: Offstage(),
+     errorStyle: TextStyle(color: Colors.white)
   );
 }

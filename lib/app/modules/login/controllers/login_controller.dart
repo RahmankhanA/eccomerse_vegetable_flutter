@@ -1,25 +1,23 @@
+import 'package:eccomerse_vegetable/app/modules/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  //TODO: Implement LoginController
+static LoginController get to => Get.find();
 bool remember=true;
 bool hidepassword=true;
-  GlobalKey loginFormKey = GlobalKey<FormState>();
-  @override
-  void onInit() {
-    super.onInit();
+  final loginFormKey = GlobalKey<FormState>();
+  TextEditingController emailController=TextEditingController();
+  TextEditingController passwordController=TextEditingController();
+
+
+  login()async{
+    Widgets.showLoader("Login");
+   await  Future.delayed(const Duration(seconds: 1));
+   Widgets.hideLoader();
+    Get.offAllNamed('/home');
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 
 }
